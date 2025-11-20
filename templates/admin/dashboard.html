@@ -1,0 +1,174 @@
+```html
+{% extends "quiz_betting/base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-red-600 to-pink-600 rounded-3xl p-8 text-white mb-8">
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-4xl font-black mb-2">🎛️ Admin Dashboard</h1>
+                <p class="text-xl">Kontwòl total sou platfòm lan</p>
+            </div>
+            <div class="text-right">
+                <div class="text-sm">Komisyon Aktyèl</div>
+                <div class="text-4xl font-black">{{ stats.commission|default(15) }}%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="grid md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="bg-green-100 rounded-full p-3">
+                    <span class="text-2xl">💰</span>
+                </div>
+                <div>
+                    <div class="text-sm text-gray-600">Revni Total</div>
+                    <div class="text-3xl font-black text-green-600">
+                        {{ stats.total_revenue|default(0)|round|int }} HTG
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="bg-blue-100 rounded-full p-3">
+                    <span class="text-2xl">👥</span>
+                </div>
+                <div>
+                    <div class="text-sm text-gray-600">Total Itilizatè</div>
+                    <div class="text-3xl font-black text-blue-600">
+                        {{ stats.total_users|default(0) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="bg-purple-100 rounded-full p-3">
+                    <span class="text-2xl">🎯</span>
+                </div>
+                <div>
+                    <div class="text-sm text-gray-600">Total Paryaj</div>
+                    <div class="text-3xl font-black text-purple-600">
+                        {{ stats.total_bets|default(0) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="bg-orange-100 rounded-full p-3">
+                    <span class="text-2xl">📊</span>
+                </div>
+                <div>
+                    <div class="text-sm text-gray-600">To Siksè</div>
+                    <div class="text-3xl font-black text-orange-600">
+                        {{ stats.win_rate|default(0)|round|int }}%
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Today's Revenue -->
+    <div class="grid md:grid-cols-2 gap-6 mb-8">
+        <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl p-8 text-white">
+            <div class="text-sm mb-2">Revni Jodi a</div>
+            <div class="text-5xl font-black mb-4">{{ stats.today_revenue|default(0)|round|int }} HTG</div>
+            <div class="text-sm opacity-80">{{ stats.today_bets|default(0) }} paryaj jodi a</div>
+        </div>
+
+        <div class="bg-gradient-to-br from-blue-500 to-cyan-600 rounded-3xl p-8 text-white">
+            <div class="text-sm mb-2">Total Montan Paryaj</div>
+            <div class="text-5xl font-black mb-4">{{ stats.total_bets_amount|default(0)|round|int }} HTG</div>
+            <div class="text-sm opacity-80">Ou komisyon: {{ ((stats.total_bets_amount|default(0)) * 0.15)|round|int }} HTG</div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="grid md:grid-cols-4 gap-4 mb-8">
+        <a href="{{ url_for('admin_users') }}" class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all text-center">
+            <div class="text-4xl mb-2">👥</div>
+            <div class="font-bold">Jere Itilizatè</div>
+        </a>
+        <a href="{{ url_for('admin_bets') }}" class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all text-center">
+            <div class="text-4xl mb-2">🎯</div>
+            <div class="font-bold">Wè Paryaj</div>
+        </a>
+        <a href="{{ url_for('admin_quiz_list') }}" class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all text-center">
+            <div class="text-4xl mb-2">📝</div>
+            <div class="font-bold">Jere Quiz</div>
+        </a>
+        <a href="{{ url_for('admin_settings') }}" class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all text-center">
+            <div class="text-4xl mb-2">⚙️</div>
+            <div class="font-bold">Paramèt</div>
+        </a>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="grid md:grid-cols-2 gap-6">
+        <!-- Recent Bets -->
+        <div class="bg-white rounded-3xl shadow-lg p-6">
+            <h2 class="text-2xl font-black mb-4">📊 Dènye Paryaj</h2>
+            <div class="space-y-3">
+                {% for bet in recent_bets[:5] %}
+                <div class="border-2 border-gray-100 rounded-xl p-4">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <div class="font-bold">{{ bet.username|default('User') }}</div>
+                            <div class="text-sm text-gray-600">{{ bet.quiz_question|default('Quiz #' ~ bet.quiz_id)|truncate(40) }}</div>
+                        </div>
+                        <div class="text-right">
+                            {% if bet.is_correct %}
+                            <div class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-bold">✅ Genyen</div>
+                            <div class="text-sm text-green-600 font-bold mt-1">+{{ bet.win_amount }} HTG</div>
+                            {% else %}
+                            <div class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-bold">❌ Pèdi</div>
+                            <div class="text-sm text-red-600 font-bold mt-1">-{{ bet.bet_amount }} HTG</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <p class="text-gray-500 text-center py-8">Pa gen paryaj ankò</p>
+                {% endfor %}
+            </div>
+            <a href="{{ url_for('admin_bets') }}" class="block text-center mt-4 text-purple-600 font-bold hover:underline">
+                Wè Tout →
+            </a>
+        </div>
+
+        <!-- Top Players -->
+        <div class="bg-white rounded-3xl shadow-lg p-6">
+            <h2 class="text-2xl font-black mb-4">🏆 Meye Jwè yo</h2>
+            <div class="space-y-3">
+                {% for player in top_players[:5] %}
+                <div class="border-2 border-gray-100 rounded-xl p-4">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <div class="font-bold">{{ player.username }}</div>
+                            <div class="text-sm text-gray-600">
+                                {{ player.total_wins }} genyen / {{ player.total_bets }} paryaj
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-black text-purple-600">{{ player.win_rate|round|int }}%</div>
+                            <div class="text-xs text-gray-600">To siksè</div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <p class="text-gray-500 text-center py-8">Pa gen jwè ankò</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+```
