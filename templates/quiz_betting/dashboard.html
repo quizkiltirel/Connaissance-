@@ -1,0 +1,123 @@
+```html
+{% extends "quiz_betting/base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- User Stats -->
+    <div class="gradient-bg rounded-3xl p-8 text-white mb-8">
+        <h1 class="text-4xl font-black mb-4">Byenveni, {{ user.username }}!</h1>
+        <div class="grid md:grid-cols-4 gap-4">
+            <div class="bg-white/20 backdrop-blur-lg rounded-xl p-4">
+                <div class="text-sm">Balans</div>
+                <div class="text-3xl font-black">{{ user.balance|default(0) }} HTG</div>
+            </div>
+            <div class="bg-white/20 backdrop-blur-lg rounded-xl p-4">
+                <div class="text-sm">Total Paryaj</div>
+                <div class="text-3xl font-black">{{ user.total_bets|default(0) }}</div>
+            </div>
+            <div class="bg-white/20 backdrop-blur-lg rounded-xl p-4">
+                <div class="text-sm">Genyen</div>
+                <div class="text-3xl font-black text-green-300">{{ user.total_wins|default(0) }}</div>
+            </div>
+            <div class="bg-white/20 backdrop-blur-lg rounded-xl p-4">
+                <div class="text-sm">Pèdi</div>
+                <div class="text-3xl font-black text-red-300">{{ user.total_losses|default(0) }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Categories -->
+    <div class="space-y-8">
+        <!-- Easy Quizzes -->
+        <div>
+            <h2 class="text-3xl font-black mb-4">🟢 Quiz Fasil (35-40 HTG)</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                {% for quiz in easy_quizzes %}
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-bold">{{ quiz.category }}</span>
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-bold">{{ quiz.difficulty }}</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-4">{{ quiz.question }}</h3>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="bg-gray-50 rounded-lg p-3">
+                            <div class="text-xs text-gray-600">Paryaj</div>
+                            <div class="text-xl font-black text-purple-600">{{ quiz.bet_amount }} HTG</div>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-3">
+                            <div class="text-xs text-gray-600">Genyen</div>
+                            <div class="text-xl font-black text-green-600">{{ quiz.win_amount }} HTG</div>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('quiz_detail', quiz_id=quiz.id) }}" 
+                       class="block w-full gradient-bg text-white text-center py-3 rounded-xl font-bold hover:opacity-90">
+                        Jwe Kounye a
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Medium Quizzes -->
+        <div>
+            <h2 class="text-3xl font-black mb-4">🟡 Quiz Mwayen (50 HTG)</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                {% for quiz in medium_quizzes %}
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-bold">{{ quiz.category }}</span>
+                        <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-bold">{{ quiz.difficulty }}</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-4">{{ quiz.question }}</h3>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="bg-gray-50 rounded-lg p-3">
+                            <div class="text-xs text-gray-600">Paryaj</div>
+                            <div class="text-xl font-black text-purple-600">{{ quiz.bet_amount }} HTG</div>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-3">
+                            <div class="text-xs text-gray-600">Genyen</div>
+                            <div class="text-xl font-black text-green-600">{{ quiz.win_amount }} HTG</div>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('quiz_detail', quiz_id=quiz.id) }}" 
+                       class="block w-full gradient-bg text-white text-center py-3 rounded-xl font-bold hover:opacity-90">
+                        Jwe Kounye a
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Hard Quizzes -->
+        <div>
+            <h2 class="text-3xl font-black mb-4">🔴 Quiz Difisil (60 HTG)</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                {% for quiz in hard_quizzes %}
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-bold">{{ quiz.category }}</span>
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-bold">{{ quiz.difficulty }}</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-4">{{ quiz.question }}</h3>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="bg-gray-50 rounded-lg p-3">
+                            <div class="text-xs text-gray-600">Paryaj</div>
+                            <div class="text-xl font-black text-purple-600">{{ quiz.bet_amount }} HTG</div>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-3">
+                            <div class="text-xs text-gray-600">Genyen</div>
+                            <div class="text-xl font-black text-green-600">{{ quiz.win_amount }} HTG</div>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('quiz_detail', quiz_id=quiz.id) }}" 
+                       class="block w-full gradient-bg text-white text-center py-3 rounded-xl font-bold hover:opacity-90">
+                        Jwe Kounye a
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+```

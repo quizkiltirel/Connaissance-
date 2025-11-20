@@ -1,0 +1,72 @@
+```html
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Quiz Paryaj - Genyen Lajan!{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    {% if session.get('uid') %}
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <a href="{{ url_for('dashboard') }}" class="text-2xl font-black text-purple-600">
+                    🎯 Quiz Paryaj
+                </a>
+                <div class="flex items-center gap-4">
+                    <a href="{{ url_for('dashboard') }}" class="text-gray-700 hover:text-purple-600 font-semibold">Dashboard</a>
+                    <a href="{{ url_for('bet_history') }}" class="text-gray-700 hover:text-purple-600 font-semibold">Istwa</a>
+                    <a href="{{ url_for('add_balance') }}" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-green-600">
+                        Ajoute Lajan
+                    </a>
+                    <span class="text-gray-600">👤 {{ session.get('username', 'User') }}</span>
+                    <a href="{{ url_for('logout') }}" class="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600">
+                        Sòti
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mx-auto px-4 py-4">
+                {% for category, message in messages %}
+                    <div class="{% if category == 'error' %}bg-red-100 border-red-500 text-red-700{% else %}bg-green-100 border-green-500 text-green-700{% endif %} border-l-4 p-4 rounded-lg mb-4 animate-fade-in">
+                        <p class="font-semibold">{{ message }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-20">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 Quiz Paryaj. Tout dwa rezève.</p>
+            <p class="text-sm text-gray-400 mt-2">Jwe responsableman. 18+</p>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+```
