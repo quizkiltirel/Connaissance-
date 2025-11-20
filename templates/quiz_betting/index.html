@@ -1,0 +1,60 @@
+```html
+{% extends "quiz_betting/base.html" %}
+
+{% block content %}
+<div class="gradient-bg py-20">
+    <div class="container mx-auto px-4 text-center text-white">
+        <div class="animate-fade-in">
+            <div class="text-8xl mb-6">🎯</div>
+            <h1 class="text-6xl font-black mb-4">Quiz Paryaj</h1>
+            <p class="text-3xl mb-8">Teste konesans ou, genyen lajan reyèl!</p>
+            
+            <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
+                <div class="bg-white/20 backdrop-blur-lg rounded-2xl p-6">
+                    <div class="text-4xl font-black">{{ stats.total_users|default(0) }}</div>
+                    <div class="text-lg">Itilizatè Aktif</div>
+                </div>
+                <div class="bg-white/20 backdrop-blur-lg rounded-2xl p-6">
+                    <div class="text-4xl font-black">{{ stats.total_bets|default(0) }}</div>
+                    <div class="text-lg">Total Paryaj</div>
+                </div>
+                <div class="bg-white/20 backdrop-blur-lg rounded-2xl p-6">
+                    <div class="text-4xl font-black">{{ stats.total_questions|default(0) }}</div>
+                    <div class="text-lg">Quiz Disponib</div>
+                </div>
+            </div>
+
+            <div class="flex justify-center gap-6">
+                <a href="{{ url_for('login') }}" class="bg-white text-purple-700 px-10 py-5 rounded-2xl font-black text-xl hover:bg-purple-50 transform hover:scale-105 transition-all">
+                    🔓 Konekte
+                </a>
+                <a href="{{ url_for('signup') }}" class="bg-green-500 text-white px-10 py-5 rounded-2xl font-black text-xl hover:bg-green-600 transform hover:scale-105 transition-all">
+                    ✨ Enskri Gratis
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-16">
+    <h2 class="text-4xl font-black text-center mb-12">Kijan sa Mache?</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white rounded-2xl shadow-xl p-8 text-center">
+            <div class="text-6xl mb-4">1️⃣</div>
+            <h3 class="text-2xl font-bold mb-3">Chwazi Quiz</h3>
+            <p class="text-gray-600">Chwazi yon kesyon nan kategori ou renmen</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow-xl p-8 text-center">
+            <div class="text-6xl mb-4">2️⃣</div>
+            <h3 class="text-2xl font-bold mb-3">Paryaj 25 HTG</h3>
+            <p class="text-gray-600">Mete 25 HTG pou reponn kesyon an</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow-xl p-8 text-center">
+            <div class="text-6xl mb-4">3️⃣</div>
+            <h3 class="text-2xl font-bold mb-3">Genyen 35-60 HTG</h3>
+            <p class="text-gray-600">Si ou kòrèk, genyen jiska 60 HTG!</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+```
