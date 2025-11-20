@@ -1,0 +1,52 @@
+```html
+{% extends "quiz_betting/base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-3xl shadow-2xl p-8">
+            <h1 class="text-3xl font-black mb-8">⚙️ Paramèt Platfòm</h1>
+
+            <form method="POST" class="space-y-6">
+                <!-- Commission -->
+                <div>
+                    <label class="block text-lg font-bold mb-4">Komisyon Platfòm</label>
+                    <div class="flex items-center gap-4">
+                        <input type="number" name="commission" min="0" max="50" 
+                               value="{{ commission|default(15) }}" required
+                               class="flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl focus:border-purple-500 focus:outline-none text-2xl font-black text-center">
+                        <span class="text-3xl font-black">%</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">
+                        Pousentaj ou pran sou chak paryaj (0-50%)
+                    </p>
+                </div>
+
+                <!-- Revenue Calculator -->
+                <div class="bg-purple-50 rounded-2xl p-6">
+                    <div class="font-bold mb-3">💰 Kalkil Revni</div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span>100 paryaj × 25 HTG × {{ commission }}%</span>
+                            <span class="font-black">{{ (100 * 25 * commission / 100)|round|int }} HTG</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>500 paryaj × 25 HTG × {{ commission }}%</span>
+                            <span class="font-black">{{ (500 * 25 * commission / 100)|round|int }} HTG</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>1000 paryaj × 25 HTG × {{ commission }}%</span>
+                            <span class="font-black text-green-600">{{ (1000 * 25 * commission / 100)|round|int }} HTG</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full gradient-bg text-white py-4 rounded-xl font-black text-lg hover:opacity-90">
+                    💾 Anrejistre Chanjman
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+```

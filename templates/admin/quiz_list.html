@@ -1,0 +1,53 @@
+```html
+{% extends "quiz_betting/base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-4xl font-black mb-2">📝 Tout Quiz</h1>
+            <p class="text-gray-600">Jere tout kesyon yo</p>
+        </div>
+        <a href="{{ url_for('admin_add_quiz') }}" class="bg-green-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-green-600">
+            ➕ Ajoute Quiz
+        </a>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+        {% for quiz in quizzes %}
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex justify-between items-start mb-4">
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-bold">
+                            {{ quiz.category }}
+                        </span>
+                        <span class="{% if quiz.difficulty == 'Fasil' %}bg-green-100 text-green-700{% elif quiz.difficulty == 'Mwayen' %}bg-yellow-100 text-yellow-700{% else %}bg-red-100 text-red-700{% endif %} px-3 py-1 rounded-full text-sm font-bold">
+                            {{ quiz.difficulty }}
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">{{ quiz.question }}</h3>
+                    <div class="text-sm text-gray-600">
+                        <div>Paryaj: <strong>{{ quiz.bet_amount }} HTG</strong></div>
+                        <div>Genyen: <strong>{{ quiz.win_amount }} HTG</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <a href="{{ url_for('admin_edit_quiz', quiz_id=quiz.id) }}" 
+                   class="flex-1 bg-blue-500 text-white text-center py-2 rounded-lg font-bold hover:bg-blue-600">
+                    ✏️ Modifye
+                </a>
+                <form method="POST" action="{{ url_for('admin_delete_quiz', quiz_id=quiz.id) }}" class="flex-1" onsubmit="return confirm('Ou sèten?')">
+                    <button type="submit" class="w-full bg-red-500 text-white py-2 rounded-lg font-bold hover:bg-red-600">
+                        🗑️ Efase
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+```
